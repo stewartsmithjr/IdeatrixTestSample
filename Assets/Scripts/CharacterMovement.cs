@@ -28,7 +28,7 @@ public class CharacterMovement : NetworkBehaviour
 
     public string MoveFloatName;
     Quaternion targetRotation;
-    Quaternion rotation;float gravity;
+    Quaternion rotation;Vector3 gravity;
     private InputAction moveInput;
     private InputSystem_Actions action;
     private InputAction rotateInput;
@@ -45,6 +45,7 @@ public class CharacterMovement : NetworkBehaviour
 
 
         Movement();
+        FixedMovement();
     }
 
 
@@ -70,18 +71,15 @@ public class CharacterMovement : NetworkBehaviour
         inputAmount = Mathf.Clamp01(inputMag);
         moveDirection = new Vector3((combinedInput).normalized.x, 0, (combinedInput).normalized.z);
 
-        moveDirection.y += Physics.gravity.y * Time.deltaTime ;
+       
 
 
-
-        gravity += Time.deltaTime * Physics.gravity.y;
-
-        Rigidbody rigidbody = GetComponent<Rigidbody>();
+       
 
         Animator animator = transform.GetComponent<Animator>();
 
        
-        rigidbody.linearVelocity = -( moveDirection * gravity * Runner.DeltaTime);
+       
 
         rotation = Quaternion.LookRotation(moveDirection);
 
@@ -90,4 +88,98 @@ public class CharacterMovement : NetworkBehaviour
         animator.SetFloat(MoveFloatName, inputAmount, 0.2f, Time.fixedDeltaTime);
         
     }
+    void FixedMovement()
+    {
+
+        Animator animator = GetComponent<Animator>();
+        // if not grounded , increase down force
+        animator.SetBool("IsGrounded", (FloorRaycasts(0, 0, rayLengthMuliplier) != Vector3.zero));
+        if (FloorRaycasts(0, 0, rayLengthMuliplier) == Vector3.zero)
+        {
+            gravity += Vector3.up * Physics.gravity.y * Time.fixedDeltaTime;
+        }
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+
+        // find the Y position via raycasts
+        floorMovement = new Vector3(rigidbody.position.x, FindFloor().y , rigidbody.position.z);
+
+
+
+        // only stick to floor when grounded
+        if ((FloorRaycasts(0, 0, rayLengthMuliplier) != Vector3.zero && floorMovement != rigidbody.position))
+        {
+            animator.SetBool("IsGrounded", true);
+            rigidbody.MovePosition(floorMovement);
+
+            gravity.y = 0;
+        }
+
+        
+            rigidbody.linearVelocity = (moveDirection * (float)5 * inputAmount) + gravity;
+
+
+
+
+
+        if (animator.GetBool("IsGrounded") == true)
+        {
+            gravity.y = 0;
+
+        }
+    }
+    Vector3 CombinedRaycast;
+    Vector3 raycastFloorPos;
+    Vector3 floorMovement;
+
+    Vector3 FindFloor()
+    {
+        // width of raycasts around the centre of your character
+        float raycastWidth = 0.25f;
+        // check floor on 5 raycasts   , get the average when not Vector3.zero  
+        int floorAverage = 1;
+
+        CombinedRaycast = FloorRaycasts(0, 0, rayLengthMuliplier);
+        floorAverage += (getFloorAverage(raycastWidth, 0) + getFloorAverage(-raycastWidth, 0) + getFloorAverage(0, raycastWidth) + getFloorAverage(0, -raycastWidth));
+
+        return CombinedRaycast / floorAverage;
+    }
+
+    // only add to average floor position if its not Vector3.zero
+    int getFloorAverage(float offsetx, float offsetz)
+    {
+
+        if (FloorRaycasts(offsetx, offsetz, rayLengthMuliplier) != Vector3.zero)
+        {
+
+            CombinedRaycast += FloorRaycasts(offsetx, offsetz, rayLengthMuliplier);
+            return 1;
+        }
+        else { return 0; }
+    }
+    [SerializeField] LayerMask water;
+    [SerializeField] float rayLengthMuliplier;
+    Vector3 FloorRaycasts(float offsetx, float offsetz, float raycastLength)
+    {
+
+        RaycastHit hit;
+        // move raycast
+        raycastFloorPos = transform.TransformPoint(0 + offsetx, 0 + 0.5f, 0 + offsetz);
+
+        Debug.DrawRay(raycastFloorPos, Vector3.down, Color.magenta);
+
+
+
+        if (Physics.Raycast(raycastFloorPos, -Vector3.up, out hit, raycastLength))
+        {
+            return hit.point;
+        }
+
+
+        else
+        {
+            return Vector3.zero;
+        }
+
+    }
+
 }

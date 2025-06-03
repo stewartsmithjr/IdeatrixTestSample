@@ -2509,6 +2509,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9100000, guid: 216f2c16b012f3a4b8b7d91b7ffa964a, type: 2}
     - target: {fileID: 8404794243657137345, guid: f068726cf2f75c24cad668d3cffd68cc, type: 3}
+      propertyPath: m_AnimatePhysics
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404794243657137345, guid: f068726cf2f75c24cad668d3cffd68cc, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
@@ -2568,6 +2572,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveFloatName: Velocity
+  water:
+    serializedVersion: 2
+    m_Bits: 0
+  rayLengthMuliplier: 1
 --- !u!114 &2830252230280884232
 MonoBehaviour:
   m_ObjectHideFlags: 0
