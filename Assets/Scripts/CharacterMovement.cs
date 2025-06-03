@@ -118,6 +118,7 @@ public class CharacterMovement : NetworkBehaviour
             rigidbody.linearVelocity = (moveDirection * (float)5 * inputAmount) + gravity;
 
 
+         
 
 
 
