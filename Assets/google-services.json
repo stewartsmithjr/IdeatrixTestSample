@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "633365404689",
+    "firebase_url": "https://ideatrixchatsample-default-rtdb.firebaseio.com",
+    "project_id": "ideatrixchatsample",
+    "storage_bucket": "ideatrixchatsample.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:633365404689:android:600dda1356df609a9865b0",
+        "android_client_info": {
+          "package_name": "com.RGB0.IdeatrixChatSample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "633365404689-00j39j4m8pmjii8rduqsu2khaqp12p6c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.RGB0.IdeatrixChatSample",
+            "certificate_hash": "1effc4e2045019995bcdf5cb889eb56a280cc5d4"
+          }
+        },
+        {
+          "client_id": "633365404689-psvnpgh211b24ihgrv1se2vusrqfst14.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-XYLgU9ue6hxY5xY3rRRtaLE77XG6ZBs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "633365404689-psvnpgh211b24ihgrv1se2vusrqfst14.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
